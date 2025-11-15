@@ -2,12 +2,12 @@ import uuid
 from datetime import datetime
 
 from citext import CIText
-from sqlalchemy import true, Column, text
+from sqlalchemy import Column, text
 from sqlalchemy.sql.sqltypes import String, TIMESTAMP
 from sqlmodel import SQLModel, Field
 
 
-class User(SQLModel, table=true):
+class Users(SQLModel, table=True):
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
     first_name: str = Field(sa_column=Column(String(100), nullable=False))
     last_name: str = Field(sa_column=Column(String(100), nullable=False))
