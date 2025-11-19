@@ -48,6 +48,10 @@ app.middleware("http")(request_id_middleware)
 async def root(request: Request, response: Response):
     return {"message": "Hello World"}
 
+@app.get("/health")
+async def health():
+    return {"status": "ok"}
+
 
 @app.post("/signup")
 async def signup(data: UserCreate, session: AsyncSession = Depends(get_session)):
