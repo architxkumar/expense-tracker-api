@@ -5,23 +5,26 @@ FROM python:3.11-slim
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
+# Cloud Run will tell us which port to use
+ENV PORT=8080
+
 # Set working directory inside container
 WORKDIR /app
 
 # Install system dependencies required for psycopg / asyncpg builds
 RUN apt-get update && apt-get install -y build-essential
 
-# Copy requirements file first (for caching)
+# Copy requirements first
 COPY requirements.txt .
 
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of your application
+# Copy the rest of your application files
 COPY . .
 
-# Expose FastAPI port; this is for documentation purposes
-EXPOSE 8000
+# Cloud Run ignores EXPOSE but it doesn’t harm
+EXPOSE 8080
 
-# Command to run your app
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Run the FastAPI app using the dynamic Cloud Run PORT
+CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port $PORT"]
