@@ -10,7 +10,6 @@ from starlette.responses import Response, JSONResponse
 
 from db.database import get_session, engine
 from dto.user import UserCreate
-from middleware.error_handler_middleware import error_handler_middleware
 from middleware.logger_middleware import logger_middleware
 from middleware.request_id_middleware import request_id_middleware
 from middleware.security_middleware import security_middleware
@@ -39,7 +38,6 @@ async def lifespan(app: FastAPI):
 app = FastAPI(lifespan=lifespan)
 
 app.middleware("http")(security_middleware)
-app.middleware("http")(error_handler_middleware)
 app.middleware("http")(logger_middleware)
 app.middleware("http")(request_id_middleware)
 
