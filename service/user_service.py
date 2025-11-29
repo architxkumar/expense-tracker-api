@@ -3,7 +3,8 @@ from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 
 from db.models.user import Users
-from dto.user import UserCreate
+from dto.user import UserCreate, UserLogin
+from service.jwt_service import JWTService
 
 
 class UserService:
@@ -35,3 +36,21 @@ class UserService:
         self.session.add(user)
         await self.session.commit()
         await self.session.refresh(user)
+
+    async def login_user(self, data: UserLogin) -> str:
+        # Fetch user
+        user = (await self.session.exec(select(Users).where(Users.email == data.email))).first()
+        if not user:
+            raise ValueError("Invalid email or password")
+
+        # Get password hash
+        password_hash = user.password_hash
+        # Compare the hash
+        if bcrypt.checkpw(data.password.encode(), password_hash.encode()):
+
+            return JWTService.generate_token(user_id=str(user.id))
+        else:
+            raise ValueError("Invalid email or password")
+
+
+

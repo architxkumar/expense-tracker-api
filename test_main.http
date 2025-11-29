@@ -1,9 +1,25 @@
+POST http://localhost:8000/login
+Content-Type: application/json
+
+{
+  "email": "johndoe@gmail.com",
+  "password": "1223455454"
+}
+
+###
+POST http://localhost:80/api/item
+Content-Type: application/json
+
+{}
+
+###
 POST http://localhost:8000/signup
 Content-Type: application/json
 
 {
+  "email": "johndoe@gmail.com",
   "first_name": "John",
   "last_name": "Doe",
-  "email": "example@gmail.com",
-  "password": "securepassword"
+  "password": "12234553454"
+
 }

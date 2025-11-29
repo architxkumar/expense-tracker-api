@@ -12,7 +12,7 @@ class Users(SQLModel, table=True):
     first_name: str = Field(sa_column=Column(String(100), nullable=False))
     last_name: str = Field(sa_column=Column(String(100), nullable=False))
     email: str = Field(sa_column=Column(CIText, unique=True))
-    password_hash: str
+    password_hash: str = Field(nullable=False)
     created_at: datetime = Field(
         sa_column=Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('CURRENT_TIMESTAMP')))
     updated_at: datetime = Field(
